@@ -316,7 +316,7 @@ const EventModal = ({ event, onClose, lang }: { event: EventItem | null, onClose
 const HomeView = ({ onNavigateToSchedule, onShowInstall, lang }: { onNavigateToSchedule: () => void, onShowInstall: () => void, lang: Language, key?: string }) => {
   const t = translations[lang];
   const [rating, setRating] = useState(0);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('lecture');
   const [selectedLecture, setSelectedLecture] = useState('');
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -326,7 +326,7 @@ const HomeView = ({ onNavigateToSchedule, onShowInstall, lang }: { onNavigateToS
     const options = SCHEDULE_DATA.map(event => ({
       title: event.title,
       time: event.time,
-      display: `${event.title} (${event.time})`
+      display: `${event.title} (${event.day}/${event.month} - ${event.time})`
     }));
     
     const uniqueOptions = Array.from(new Set(options.map(o => o.display)))
