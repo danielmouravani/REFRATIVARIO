@@ -4,7 +4,7 @@ export interface Speaker {
 
 export interface EventItem {
   id: string;
-  type: 'Wet Lab' | 'Dry Lab' | 'Palestra';
+  type: 'Wet Lab' | 'Dry Lab';
   title: string;
   date: string; // ISO format or simple string for display
   day: string; // e.g., "25"

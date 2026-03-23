@@ -322,9 +322,18 @@ const HomeView = ({ onNavigateToSchedule, onShowInstall, lang }: { onNavigateToS
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const lectureTitles = useMemo(() => {
-    const titles = new Set(SCHEDULE_DATA.map(event => event.title));
-    return Array.from(titles).sort();
+  const lectureOptions = useMemo(() => {
+    const options = SCHEDULE_DATA.map(event => ({
+      title: event.title,
+      time: event.time,
+      display: `${event.title} (${event.time})`
+    }));
+    
+    const uniqueOptions = Array.from(new Set(options.map(o => o.display)))
+      .map(display => options.find(o => o.display === display)!)
+      .sort((a, b) => a.display.localeCompare(b.display));
+      
+    return uniqueOptions;
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -336,17 +345,20 @@ const HomeView = ({ onNavigateToSchedule, onShowInstall, lang }: { onNavigateToS
     setSubmitStatus('idle');
 
     try {
-      const response = await fetch('https://formspree.io/f/xgooypad', {
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify({
+          access_key: '6ed285e2-b7f0-4d09-a135-5a24d23046e7',
           rating,
           category,
           lecture: category === 'lecture' ? selectedLecture : undefined,
           comment,
-          language: lang
+          language: lang,
+          from_name: 'REFRATIVA R.I.O. App'
         })
       });
 
@@ -413,6 +425,26 @@ const HomeView = ({ onNavigateToSchedule, onShowInstall, lang }: { onNavigateToS
           <ChevronRight className="w-5 h-5 text-slate-300" />
         </a>
       </section>
+
+      <div className="px-6 mt-4">
+        <a 
+          href="https://assets.zyrosite.com/ALpeJ4P1RzcZJLwB/whatsapp-image-2026-03-23-at-08.15.46-4bBKn7Hkio6g8y4w.jpeg" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="bg-white rounded-[24px] p-4 border border-slate-100 shadow-sm flex items-center justify-between hover:bg-slate-50 transition-colors block"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
+              <MapPin className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="font-bold text-slate-800">{t.wetLabLocation}</h4>
+              <p className="text-slate-400 text-sm">{t.wetLabLocationDesc}</p>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 text-slate-300" />
+        </a>
+      </div>
 
       <section className="px-6 mt-10">
         <h3 className="text-lg font-bold text-slate-800 mb-4">{t.complementaryMaterial}</h3>
@@ -500,8 +532,8 @@ const HomeView = ({ onNavigateToSchedule, onShowInstall, lang }: { onNavigateToS
                 className="w-full p-4 bg-slate-50 rounded-2xl border-none text-slate-700 font-medium mb-6 focus:ring-2 focus:ring-amber-500"
               >
                 <option value="">{t.select}</option>
-                {lectureTitles.map(title => (
-                  <option key={title} value={title}>{title}</option>
+                {lectureOptions.map(option => (
+                  <option key={option.display} value={option.display}>{option.display}</option>
                 ))}
               </select>
             </>
