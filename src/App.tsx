@@ -449,7 +449,7 @@ const HomeView = ({ onNavigateToSchedule, onShowInstall, lang }: { onNavigateToS
       <section className="px-6 mt-10">
         <h3 className="text-lg font-bold text-slate-800 mb-4">{t.complementaryMaterial}</h3>
         <a 
-          href="https://tqjjaoipaomhcpxswads.supabase.co/storage/v1/object/public/exams/dda86be0-7471-485d-932d-4b5f0fd5ac1d/material%20wetlabs.pdf" 
+          href="https://drive.google.com/file/d/1HOrLyzGYb1TvIfV0qF1TTNA_NsUkW_sa/view" 
           target="_blank" 
           rel="noopener noreferrer"
           className="bg-white rounded-[24px] p-4 border border-slate-100 shadow-sm flex items-center justify-between hover:bg-slate-50 transition-colors block"
